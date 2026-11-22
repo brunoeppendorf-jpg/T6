@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SchoolSupply – Die Schulbörse der Sportschulen Halle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0b1f3a; --navy-2:#12345b; --blue:#2563eb; --sky:#eaf2ff;
+  --ink:#14243a; --muted:#64748b; --line:#e2e8f0; --surface:#ffffff;
+  --bg:#f4f7fc; --accent:#38bdf8; --green:#0f9f78;
+  --shadow:0 14px 40px rgba(15,35,65,.09); --shadow-sm:0 6px 20px rgba(15,35,65,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+button,input,select,textarea{font:inherit}
+button{ -webkit-tap-highlight-color:transparent }
+.wrap{max-width:1220px;margin:0 auto;padding:28px 34px 90px}
+header{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;padding:15px 18px;background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-sm);margin-bottom:28px}
+.logo-block{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.logo{display:block;width:300px;max-width:100%;height:auto}
+.logo-block{min-width:0;max-width:100%}
+.chat-message{margin-bottom:8px}
+.chat-message.mine{text-align:right}
+.chat-bubble{display:inline-block;max-width:80%;padding:8px 12px;border-radius:8px;background:#eee;white-space:pre-wrap;overflow-wrap:anywhere;text-align:left}
+.chat-message.mine .chat-bubble{background:var(--navy-2);color:#fff}
+.chat-history{max-height:300px;overflow-y:auto;margin-bottom:10px}
+.school-badge{background:#edf4ff;color:#1d4ed8;font-weight:800;font-size:.68rem;padding:8px 12px;border-radius:999px;letter-spacing:.09em;white-space:nowrap}
+.tagline{font-size:.9rem;color:var(--muted);margin-top:6px;line-height:1.5}
+.user-box{display:flex;align-items:center;gap:9px;flex-wrap:wrap;font-size:.88rem}
+.user-box .who{font-weight:800;color:var(--navy)}
+.user-box .who .klasse{color:var(--muted);font-weight:600}
+.btn{font-weight:800;font-size:.9rem;padding:11px 17px;border-radius:12px;border:1px solid var(--blue);background:var(--blue);color:#fff;cursor:pointer;box-shadow:0 5px 12px rgba(37,99,235,.16);transition:transform .16s ease,box-shadow .16s ease,background .16s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(37,99,235,.22);background:#1d4ed8}
+.btn.secondary{background:#fff;color:var(--navy);border-color:var(--line);box-shadow:none}
+.btn.secondary:hover{background:#f8fafc;border-color:#b9c8dc}
+.btn.small{padding:8px 12px;font-size:.82rem;border-radius:10px}
+.btn.link{background:transparent;border:0;box-shadow:none;color:#334b6b;font-weight:750;padding:9px 10px}
+.btn.link:hover{background:#f0f5ff;color:var(--blue);transform:none;box-shadow:none}
+#unreadBadge{display:inline-flex;align-items:center;justify-content:center;margin-left:3px;padding:2px 7px;border-radius:99px;background:#dbeafe;color:#1d4ed8;font-size:.72rem}
+.hero{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:24px;min-height:205px;margin:0 0 24px;padding:34px 38px;border-radius:24px;background:radial-gradient(circle at 85% 20%,rgba(56,189,248,.32),transparent 25%),linear-gradient(115deg,#0b1f3a 0%,#123b6a 65%,#155e91 100%);color:#fff;box-shadow:0 18px 36px rgba(11,31,58,.18)}
+.hero::after{content:"";position:absolute;width:230px;height:230px;right:8%;top:-120px;border:1px solid rgba(255,255,255,.16);border-radius:50%;box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 58px rgba(255,255,255,.025)}
+.hero-copy{position:relative;z-index:1;max-width:650px}
+.hero-kicker{display:inline-flex;align-items:center;gap:8px;margin-bottom:13px;color:#bfdbfe;font-size:.75rem;font-weight:850;letter-spacing:.12em;text-transform:uppercase}
+.hero-kicker::before{content:"";width:7px;height:7px;border-radius:50%;background:#38bdf8;box-shadow:0 0 0 5px rgba(56,189,248,.15)}
+.hero h1{margin:0;font-size:clamp(1.8rem,4vw,2.65rem);line-height:1.08;letter-spacing:-.055em;font-weight:900}
+.hero p{margin:12px 0 0;color:#d7e7fb;font-size:1rem;line-height:1.55;max-width:540px}
+.hero-art{position:relative;z-index:1;display:grid;place-items:center;width:150px;height:130px;flex:0 0 150px;border:1px solid rgba(255,255,255,.22);border-radius:26px;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);font-size:4.3rem;transform:rotate(5deg)}
+.searchbar{display:flex;gap:10px;margin:0 0 15px;flex-wrap:wrap}
+.searchbar input[type="text"]{flex:1;min-width:200px;padding:15px 18px 15px 48px;border:1px solid #d9e2ef;border-radius:14px;font-size:.95rem;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2364778e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-4-4'/%3E%3C/svg%3E") no-repeat 17px center;box-shadow:0 3px 10px rgba(15,35,65,.03)}
+.searchbar input:focus{outline:3px solid rgba(37,99,235,.13);border-color:#7aa6f7}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.chip{padding:9px 14px;border-radius:999px;border:1px solid #dce5f1;background:#fff;font-size:.83rem;font-weight:750;cursor:pointer;color:#52647c;transition:.15s ease}
+.chip:hover{border-color:#9dbcf4;color:var(--blue)}
+.chip.active{background:var(--navy);border-color:var(--navy);color:#fff;box-shadow:0 5px 12px rgba(11,31,58,.13)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:18px}
+.card{background:#fff;border-radius:18px;padding:13px;box-shadow:var(--shadow-sm);cursor:pointer;position:relative;border:1px solid #e8edf5;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;min-width:0}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow);border-color:#c7d9f7}
+.card .thumb{height:145px;border-radius:13px;background:linear-gradient(145deg,#edf4ff,#f7fbff);display:flex;align-items:center;justify-content:center;font-size:3.2rem;margin-bottom:14px}
+.card .title{font-weight:850;font-size:1rem;margin-bottom:6px;line-height:1.3;color:var(--navy)}
+.card .meta{font-size:.78rem;color:var(--muted);margin-bottom:9px}
+.card .price{font-size:1.12rem;color:var(--blue);font-weight:900;letter-spacing:-.02em}
+.card .pin{position:absolute;top:21px;right:21px;width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 5px rgba(34,197,94,.13)}
+.empty{text-align:center;padding:64px 20px;color:var(--muted);background:#fff;border:1px dashed #cbd7e6;border-radius:18px}
+.empty .big{font-size:1.35rem;font-weight:850;color:var(--navy);display:block;margin-bottom:8px}
+.overlay{position:fixed;inset:0;background:rgba(7,20,39,.58);display:none;align-items:flex-start;justify-content:center;padding:34px 16px;overflow-y:auto;z-index:50;backdrop-filter:blur(5px)}
+.overlay.show{display:flex}
+.modal{background:#fff;border:1px solid rgba(255,255,255,.5);border-radius:22px;max-width:520px;width:100%;padding:30px;position:relative;box-shadow:0 24px 70px rgba(0,0,0,.28);background-image:none}
+.modal .close{position:absolute;top:16px;right:17px;width:34px;height:34px;border-radius:10px;background:#f1f5f9;border:0;font-size:1.1rem;cursor:pointer;color:#52647c}
+.modal .close:hover{background:#e2e8f0}
+.modal h2{color:var(--navy);margin:0 38px 8px 0;font-size:1.55rem;letter-spacing:-.04em;font-weight:900}
+.modal label{display:block;font-weight:800;font-size:.82rem;color:#33465f;margin:16px 0 7px}
+.modal input,.modal select,.modal textarea{width:100%;padding:12px 13px;border:1px solid #d8e1ed;border-radius:11px;font-size:.93rem;background:#fbfdff;color:var(--ink)}
+.modal input:focus,.modal select:focus,.modal textarea:focus{outline:3px solid rgba(37,99,235,.12);border-color:#7aa6f7}
+.modal textarea{resize:vertical;min-height:90px}
+.modal .emoji-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.emoji-choice{width:43px;height:43px;border-radius:11px;border:1px solid #d8e1ed;background:#f8fbff;font-size:1.35rem;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.emoji-choice.selected{border:2px solid var(--blue);background:#eaf2ff}
+.modal .actions{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap}
+.detail-thumb{height:170px;border-radius:16px;background:linear-gradient(145deg,#edf4ff,#f7fbff);display:flex;align-items:center;justify-content:center;font-size:4.2rem;margin-bottom:18px}
+.detail-price{font-size:1.65rem;color:var(--blue);font-weight:900;margin-bottom:4px}
+.detail-meta{font-size:.85rem;color:var(--muted);margin-bottom:16px}
+.detail-desc{font-size:.95rem;line-height:1.65;margin-bottom:8px;color:#334155}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:13px 20px;border-radius:12px;font-weight:750;font-size:.88rem;opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:100;box-shadow:var(--shadow)}
+.toast.show{opacity:1}
+#authScreen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:28px;position:relative;z-index:1;background:radial-gradient(circle at 15% 15%,#e3edff,transparent 30%),radial-gradient(circle at 90% 85%,#dceeff,transparent 28%),var(--bg)}
+.auth-card{background:#fff;border-radius:24px;max-width:440px;width:100%;padding:36px;box-shadow:0 22px 60px rgba(15,35,65,.12);border:1px solid #e4ebf5}
+.auth-tabs{display:flex;gap:5px;margin:24px 0 20px;padding:5px;border-radius:13px;background:#f1f5fa}
+.auth-tab{flex:1;text-align:center;padding:11px;border-radius:9px;font-weight:850;cursor:pointer;color:#64748b;font-size:.88rem;transition:.15s ease}
+.auth-tab.active{background:var(--navy);color:#fff;box-shadow:0 4px 10px rgba(11,31,58,.15)}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.auth-card label{display:block;font-weight:800;font-size:.82rem;color:#33465f;margin:14px 0 7px}
+.auth-card input,.auth-card select{width:100%;padding:13px;border:1px solid #d8e1ed;border-radius:11px;font-size:.93rem;background:#fbfdff}
+.auth-card input:focus{outline:3px solid rgba(37,99,235,.12);border-color:#7aa6f7}
+.auth-card .actions{margin-top:14px}
+.auth-card .actions .btn{width:100%;padding:13px}
+.field-error{color:#dc2626;font-size:.82rem;margin-top:7px;min-height:1em}
+.auth-hint{font-size:.76rem;color:#7b8798;margin-top:22px;line-height:1.55}
+.profile-btn{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px;border:1px solid #e1e8f1;border-radius:13px;margin-bottom:9px;cursor:pointer;background:#fff;transition:.15s ease}
+.profile-btn:hover{border-color:#a9c5f5;background:#f9fbff}
+.profile-btn .name{font-weight:850;color:var(--navy)}
+.profile-btn .klasse{color:var(--muted);font-size:.82rem;margin-top:4px}
+@media(max-width:760px){.wrap{padding:15px 15px 60px}header{padding:14px;border-radius:16px;margin-bottom:17px}.user-box{width:100%;gap:4px}.user-box .who{width:100%;margin-bottom:3px}.hero{padding:27px 23px;min-height:180px;border-radius:19px}.hero-art{width:90px;height:90px;flex-basis:90px;font-size:2.8rem}.hero p{font-size:.9rem}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{padding:10px;border-radius:15px}.card .thumb{height:112px;font-size:2.6rem}.card .title{font-size:.9rem}.card .meta{font-size:.72rem}.card .price{font-size:1rem}.overlay{padding:16px 10px}.modal{padding:23px 19px;border-radius:18px}.auth-card{padding:27px 23px}}
+@media(max-width:430px){.hero-art{display:none}.hero{padding:25px 21px}.school-badge{font-size:.6rem}.user-box .btn.link{font-size:.8rem;padding:8px 7px}.user-box{justify-content:flex-start}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.card .thumb{height:96px}.chip{font-size:.76rem;padding:8px 11px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div id="authScreen">
+  <div class="auth-card">
+    <img class="logo" src="/schoolsupply-logo.jpg" width="1280" height="426" alt="SchoolSupply – Kaufen, verkaufen, wiederverwenden">
+    <div class="school-badge" style="display:inline-block; margin:8px 0 18px;">SPORTSCHULE HALLE</div>
+    <div class="tagline" style="margin-bottom:20px;">Die Schulbörse von Schüler:innen für Schüler:innen.</div>
+
+    <section id="schoolGate">
+      <h2>Schule auswählen</h2>
+      <form id="schoolForm">
+        <label for="schoolSelect">Schule</label>
+        <select id="schoolSelect" required>
+          <option value="">Bitte auswählen</option>
+          <option value="sportschule-halle">Sportschule Halle</option>
+        </select>
+        <label for="schoolPassword">Schulpasswort</label>
+        <input type="password" id="schoolPassword" required>
+        <div class="field-error" id="schoolError" role="status"></div>
+        <div class="actions"><button class="btn">Weiter</button></div>
+      </form>
+      <button type="button" class="btn link" id="showAdminLogin">Admin-Login</button>
+    </section>
+
+    <section id="adminLogin" hidden>
+      <h2>Admin-Login</h2>
+      <div class="tagline">Bruno Eppendorf</div>
+      <form id="adminLoginForm">
+        <label for="adminUsername">Admin-Nutzername</label>
+        <input id="adminUsername" value="bruno-eppendorf" autocomplete="username" required>
+        <label for="adminPassword">Admin-Passwort</label>
+        <input type="password" id="adminPassword" autocomplete="current-password" required>
+        <div class="field-error" id="adminLoginError" role="status"></div>
+        <div class="actions"><button class="btn">Anmelden</button></div>
+      </form>
+      <button type="button" class="btn link" id="backFromAdmin">Zur Schulauswahl</button>
+    </section>
+
+    <section id="accountAccess" hidden>
+    <div class="auth-tabs">
+      <div class="auth-tab active" id="tabLogin">Mein Profil</div>
+      <div class="auth-tab" id="tabRegister">Neues Profil</div>
+    </div>
+
+    <div class="auth-form active" id="loginForm">
+      <label for="lUsername">Nutzername</label>
+      <input type="text" id="lUsername" placeholder="z. B. jonas.k">
+      <label for="lPassword">Passwort</label>
+      <input type="password" id="lPassword" placeholder="••••••••">
+      <div class="field-error" id="loginError"></div>
+      <div class="actions" style="margin-top:10px;">
+        <button class="btn" id="doLogin">Anmelden</button>
+      </div>
+    </div>
+
+    <div class="auth-form" id="registerForm">
+      <label for="rName">Vorname</label>
+      <input type="text" id="rName" placeholder="z. B. Jonas">
+      <label for="rKlasse">Klasse</label>
+      <input type="text" id="rKlasse" placeholder="z. B. 10/2">
+      <label for="rUsername">Nutzername</label>
+      <input type="text" id="rUsername" placeholder="Frei wählbar, z. B. jonas.k">
+      <label for="rPassword">Passwort</label>
+      <input type="password" id="rPassword" placeholder="mind. 6 Zeichen">
+      <div class="field-error" id="registerError"></div>
+      <div class="actions" style="margin-top:10px;">
+        <button class="btn" id="doRegister">Konto erstellen</button>
+      </div>
+    </div>
+
+    <button type="button" class="btn link" id="backFromAccount">Zur Schulauswahl</button>
+    </section>
+
+    <div class="auth-hint">© Bruno Eppendorf · Sportschule Halle<br>Mit der Anmeldung bestätigst du deine Angaben. Bitte verwende ein sicheres Passwort.</div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
+<div class="wrap" id="appScreen" style="display:none;">
+  <header>
+    <div class="logo-block">
+      <div>
+        <img class="logo" src="/schoolsupply-logo.jpg" width="1280" height="426" alt="SchoolSupply – Kaufen, verkaufen, wiederverwenden">
+        <div class="tagline">Gute Dinge verdienen eine zweite Runde.</div>
+      </div>
+      <div class="school-badge">SPORTSCHULE HALLE</div>
+    </div>
+    <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+      <div class="user-box">
+        <span class="who" id="whoAmI"></span>
+        <button class="btn link" id="openProfile">Mein Profil</button>
+        <button class="btn link" id="openMessages">Nachrichten <span id="unreadBadge" style="display:none;"></span></button>
+        <button class="btn link" id="logoutBtn">Abmelden</button>
+      </div>
+      <button class="btn" id="openNewListing">+ Inserat aufgeben</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="hero-kicker">SPORTSCHULE HALLE · SCHULBÖRSE</div>
+      <h1>Finden. Weitergeben.<br>Schoolsupply - clever sein.</h1>
+      <p>Entdecke Schulbücher, Sportzeug und alles, was im Schulalltag weiterhelfen kann – direkt aus deiner Schulgemeinschaft.</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">🎒</div>
+  </section>
+
+  <div class="searchbar">
+    <input type="text" id="searchInput" placeholder="Wonach suchst du? Zum Beispiel Taschenrechner oder Matheheft …" aria-label="Inserate durchsuchen">
+  </div>
+
+  <div class="chips" id="categoryChips"></div>
+
+  <div class="grid" id="listingGrid"></div>
+  <div class="empty" id="emptyState" style="display:none;">
+    <span class="big">Hier ist noch Platz für deinen Fund.</span>
+    Sei die Erste oder der Erste und stelle etwas rein.
+  </div>
+</div>
+
+<!-- Detail Modal -->
+<div class="overlay" id="detailOverlay">
+  <div class="modal" id="detailModal"></div>
+</div>
+
+<!-- Profil Modal -->
+<div class="overlay" id="profileOverlay">
+  <div class="modal">
+    <button class="close" id="closeProfile">✕</button>
+    <h2>Mein Profil</h2>
+    <div class="tagline" style="margin-bottom:12px;" id="profileWho"></div>
+    <div id="myListingsList"></div>
+    <section id="adminSettings" hidden>
+      <h3>Schulverwaltung</h3>
+      <form id="changeSchoolPassword">
+        <label for="newSchoolPassword">Neues Schulpasswort</label>
+        <input type="password" id="newSchoolPassword" minlength="8" autocomplete="new-password" required>
+        <div class="actions"><button class="btn">Schulpasswort speichern</button></div>
+        <p class="tagline" role="status"></p>
+      </form>
+      <form id="resetUserPassword">
+        <h4>Nutzerpasswort zurücksetzen</h4>
+        <label for="resetUsername">Nutzername des Kontos</label>
+        <input id="resetUsername" autocomplete="off" required>
+        <label for="newUserPassword">Neues Nutzerpasswort</label>
+        <input type="password" id="newUserPassword" minlength="8" autocomplete="new-password" required>
+        <div class="actions"><button class="btn">Nutzerpasswort zurücksetzen</button></div>
+        <p class="tagline" role="status"></p>
+      </form>
+    </section>
+  </div>
+</div>
+
+<!-- Nachrichten Modal -->
+<div class="overlay" id="messagesOverlay">
+  <div class="modal">
+    <button class="close" id="closeMessages">✕</button>
+    <h2 id="messagesTitle">Nachrichten</h2>
+    <div id="messagesBody"></div>
+  </div>
+</div>
+
+<!-- New Listing Modal -->
+<div class="overlay" id="formOverlay">
+  <div class="modal">
+    <button class="close" id="closeForm">✕</button>
+    <h2>Neues Inserat</h2>
+    <div class="tagline" style="margin-bottom:4px;">Sichtbar für alle SSH-Schüler*innen hier.</div>
+
+    <label for="fTitle">Titel</label>
+    <input type="text" id="fTitle" placeholder="z. B. Geometrie-Set, kaum benutzt">
+
+    <label for="fCategory">Kategorie</label>
+    <select id="fCategory"></select>
+
+    <label for="fPrice">Preis (€, 0 für „zu verschenken“)</label>
+    <input type="number" id="fPrice" min="0" step="0.5" placeholder="5">
+
+    <label for="fCondition">Zustand</label>
+    <select id="fCondition">
+      <option>neu</option>
+      <option>Wie neu</option>
+      <option>Gut erhalten</option>
+      <option>Deutliche Gebrauchsspuren</option>
+    </select>
+
+    <label for="fGrade">Für welchen Jahrgang?</label>
+    <input type="text" id="fGrade" placeholder="z. B. 5.–7. Klasse">
+
+    <label>Symbol wählen</label>
+    <div class="emoji-row" id="emojiRow"></div>
+
+    <label for="fDesc">Beschreibung</label>
+    <textarea id="fDesc" placeholder="Ein paar Sätze zum Artikel…"></textarea>
+
+    <div class="actions">
+      <button class="btn" id="submitListing">Inserat veröffentlichen</button>
+      <button class="btn secondary" id="cancelForm">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const CATEGORIES = [
+  {id:'buecher', label:'Schulbücher', emoji:'📚'},
+  {id:'schreib', label:'Schreibwaren', emoji:'✏️'},
+  {id:'taschen', label:'Taschen & Mäppchen', emoji:'🎒'},
+  {id:'rechner', label:'Taschenrechner', emoji:'🧮'},
+  {id:'sport', label:'Sportzeug', emoji:'⚽'},
+  {id:'sonstiges', label:'Sonstiges', emoji:'📦'},
+];
+const EMOJI_CHOICES = ['📚','✏️','🎒','🧮','⚽','📐','🖍️','📓','🎨','👟','📦','🧪'];
+// Nur Probe Inserate 08.09.2026 BE
+const SEED_LISTINGS = [
+  {id:'seed1', title:'Matheheft-Set, 5 Stück', category:'schreib', price:3, condition:'Wie neu', grade:'5.–7. Klasse', emoji:'📓', desc:'Original verpackt, kariert, DIN A4. Farbe zufällig.', contact:'Lena, 6a', createdAt:1},
+  {id:'seed2', title:'Casio Taschenrechner', category:'rechner', price:12, condition:'Gut erhalten', grade:'ab 8. Klasse', emoji:'🧮', desc:'Funktioniert einwandfrei, leichte Kratzer am Gehäuse. Anleitung liegt bei.', contact:'Marco, 10c', createdAt:2},
+  {id:'seed3', title:'Schulrucksack', category:'taschen', price:15, condition:'Deutliche Gebrauchsspuren', grade:'5.–9. Klasse', emoji:'🎒', desc:'Ein Reißverschluss etwas schwergängig, sonst stabil. Viel Stauraum.', contact:'Amira, 7b', createdAt:3},
+  {id:'seed4', title:'Englischbuch', category:'buecher', price:1000, condition:'Gut erhalten', grade:'7. Klasse', emoji:'📚', desc:'Zu verschenken, ein paar Bleistiftnotizen sind drin, lassen sich radieren.', contact:'Finn, 8a', createdAt:4},
+];
+
+let listings = [];
+let currentUser = null;
+let schoolTicket = null;
+let authToken = null;
+const TOKEN_KEY = 'heftweise_token';
+let activeCategory = 'all';
+let selectedEmoji = EMOJI_CHOICES[0];
+
+const grid = document.getElementById('listingGrid');
+const emptyState = document.getElementById('emptyState');
+const chipsEl = document.getElementById('categoryChips');
+const toastEl = document.getElementById('toast');
+
+function showToast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  setTimeout(()=> toastEl.classList.remove('show'), 2200);
+}
+
+function categoryLabel(id){ const c = CATEGORIES.find(c=>c.id===id); return c ? c.label : id; }
+
+function escapeHtml(str){
+  const div = document.createElement('div');
+  div.textContent = str || '';
+  return div.innerHTML;
+}
+
+/* ---------- AUTH ---------- */
+document.getElementById('tabLogin').onclick = ()=> switchAuthTab('login');
+document.getElementById('tabRegister').onclick = ()=> switchAuthTab('register');
+
+function switchAuthTab(which){
+  document.getElementById('tabLogin').classList.toggle('active', which==='login');
+  document.getElementById('tabRegister').classList.toggle('active', which==='register');
+  document.getElementById('loginForm').classList.toggle('active', which==='login');
+  document.getElementById('registerForm').classList.toggle('active', which==='register');
+}
+
+async function withRetry(fn, attempts=2){
+  let lastErr;
+  for(let i=0;i<attempts;i++){
+    try{ return await fn(); }
+    catch(e){ lastErr = e; await new Promise(r=>setTimeout(r, 300)); }
+  }
+  throw lastErr;
+}
+
+async function loadAppData(){
+  try{
+    const res = await withRetry(()=> fetch('/api/listings', { headers:{ 'Authorization': 'Bearer ' + authToken } }).then(r=>{
+      if(!r.ok) throw new Error('bad status ' + r.status);
+      return r.json();
+    }));
+    listings = (Array.isArray(res.listings) && res.listings.length) ? res.listings : SEED_LISTINGS.slice();
+  }catch(e){
+    listings = SEED_LISTINGS.slice();
+    showToast('Server nicht erreichbar – läuft nur in dieser Sitzung.');
+  }
+}
+
+let saveWarningShown = false;
+async function createListing(payload){
+  const r = await fetch('/api/listings', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization': 'Bearer ' + authToken
+    },
+    body: JSON.stringify(payload)
+  });
+  const data = await r.json();
+  if(!r.ok) throw new Error(data.error || ('bad status ' + r.status));
+  return data.listing;
+}
+
+async function deleteListing(id){
+  if(!confirm('Dieses Inserat wirklich löschen?')) return;
+  try{
+    const r = await fetch('/api/listings/' + encodeURIComponent(id), {
+      method:'DELETE',
+      headers:{ 'Authorization': 'Bearer ' + authToken }
+    });
+    const data = await r.json().catch(()=>({}));
+    if(!r.ok) throw new Error(data.error || ('bad status ' + r.status));
+    listings = listings.filter(l=>l.id !== id);
+    renderGrid();
+    renderProfile();
+    showToast('Inserat gelöscht.');
+  }catch(e){
+    showToast(e.message || 'Löschen hat nicht geklappt.');
+  }
+}
+
+const LAST_USERNAME_KEY = 'heftweise_last_username';
+function prefillLastUsername(){
+  const last = localStorage.getItem(LAST_USERNAME_KEY);
+  if(last){ document.getElementById('lUsername').value = last; }
+}
+
+function showAccess(section, schoolError = ''){
+  document.getElementById('schoolGate').hidden = section !== 'schoolGate';
+  document.getElementById('adminLogin').hidden = section !== 'adminLogin';
+  document.getElementById('accountAccess').hidden = section !== 'accountAccess';
+  document.getElementById('schoolError').textContent = schoolError;
+  if(section !== 'accountAccess') schoolTicket = null;
+}
+
+document.getElementById('showAdminLogin').onclick = ()=> showAccess('adminLogin');
+document.getElementById('backFromAdmin').onclick = ()=> {
+  document.getElementById('adminLoginForm').reset();
+  document.getElementById('adminLoginError').textContent = '';
+  showAccess('schoolGate');
+};
+document.getElementById('backFromAccount').onclick = ()=> showAccess('schoolGate');
+
+async function authRequest(route, payload){
+  const response = await fetch('/api/' + route, {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await response.json();
+  if(!response.ok){
+    if(data.code === 'SCHOOL_ACCESS_REQUIRED') showAccess('schoolGate', data.error);
+    throw new Error(data.error || 'Anmeldung fehlgeschlagen.');
+  }
+  return data;
+}
+
+document.getElementById('schoolForm').onsubmit = async event =>{
+  event.preventDefault();
+  const password = document.getElementById('schoolPassword');
+  const status = document.getElementById('schoolError');
+  event.submitter.disabled = true;
+  status.textContent = '';
+  try{
+    const { ticket } = await authRequest('school/access', {
+      school: document.getElementById('schoolSelect').value,
+      password: password.value
+    });
+    schoolTicket = ticket;
+    password.value = '';
+    switchAuthTab('login');
+    showAccess('accountAccess');
+  }catch(error){
+    status.textContent = error.message;
+  }finally{
+    event.submitter.disabled = false;
+  }
+};
+
+document.getElementById('adminLoginForm').onsubmit = async event =>{
+  event.preventDefault();
+  const password = document.getElementById('adminPassword');
+  const status = document.getElementById('adminLoginError');
+  event.submitter.disabled = true;
+  status.textContent = '';
+  try{
+    const data = await authRequest('login', {
+      username: document.getElementById('adminUsername').value.trim(),
+      password: password.value,
+      admin: true
+    });
+    password.value = '';
+    currentUser = data.user;
+    authToken = data.token;
+    enterApp();
+  }catch(error){
+    status.textContent = error.message;
+  }finally{
+    event.submitter.disabled = false;
+  }
+};
+
+document.getElementById('doLogin').onclick = async ()=>{
+  const username = document.getElementById('lUsername').value.trim();
+  const password = document.getElementById('lPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+  if(!username || !password){
+    errEl.textContent = 'Bitte Nutzername und Passwort angeben.';
+    return;
+  }
+  try{
+    const data = await authRequest('login', {username, password, schoolTicket});
+    currentUser = data.user;
+    authToken = data.token;
+    localStorage.setItem(LAST_USERNAME_KEY, username);
+    document.getElementById('lPassword').value = '';
+    enterApp();
+  }catch(e){
+    errEl.textContent = e.message;
+  }
+};
+
+document.getElementById('doRegister').onclick = async ()=>{
+  const name = document.getElementById('rName').value.trim();
+  const klasse = document.getElementById('rKlasse').value.trim();
+  const username = document.getElementById('rUsername').value.trim();
+  const password = document.getElementById('rPassword').value;
+  const errEl = document.getElementById('registerError');
+  errEl.textContent = '';
+
+  if(!name || !klasse || !username || !password){
+    errEl.textContent = 'Bitte alle Felder ausfüllen.';
+    return;
+  }
+  if(password.length < 6){
+    errEl.textContent = 'Passwort muss mindestens 6 Zeichen haben.';
+    return;
+  }
+  try{
+    const data = await authRequest('register', {username, password, name, klasse, schoolTicket});
+    currentUser = data.user;
+    authToken = data.token;
+    localStorage.setItem(LAST_USERNAME_KEY, username);
+    document.getElementById('rPassword').value = '';
+    enterApp();
+  }catch(e){
+    errEl.textContent = e.message;
+  }
+};
+
+document.getElementById('logoutBtn').onclick = async ()=>{
+  try{
+    await fetch('/api/logout', {
+      method:'POST',
+      headers:{ 'Authorization': 'Bearer ' + authToken }
+    });
+  }catch(e){ /* Local sign-out still works when the server is unreachable. */ }
+  leaveApp();
+};
+
+function leaveApp(reason){
+  currentUser = null;
+  authToken = null;
+  clearInterval(messagePoll);
+  allMessages.clear();
+  document.querySelectorAll('.overlay.show').forEach(overlay => overlay.classList.remove('show'));
+  document.querySelectorAll('#adminSettings form').forEach(form => {
+    form.reset();
+    form.querySelector('[role="status"]').textContent = '';
+  });
+  messagesBody.replaceChildren();
+  activeThread = null;
+  updateUnreadBadge();
+  document.getElementById('appScreen').style.display = 'none';
+  document.getElementById('authScreen').style.display = 'flex';
+  showAccess('schoolGate', reason);
+  document.getElementById('lPassword').value = '';
+}
+
+async function enterApp(){
+  document.getElementById('authScreen').style.display = 'none';
+  document.getElementById('appScreen').style.display = 'block';
+  document.getElementById('whoAmI').innerHTML = `Angemeldet als ${escapeHtml(currentUser.name)} <span class="klasse">(${escapeHtml(currentUser.klasse)})</span>`;
+  renderChips();
+  document.getElementById('adminSettings').hidden = !currentUser.admin;
+  const token = authToken;
+  await loadAppData();
+  if(authToken !== token) return;
+  renderGrid();
+  clearInterval(messagePoll);
+  fetchMessages();
+  messagePoll = setInterval(fetchMessages, 2000);
+}
+
+/* ---------- LISTINGS ---------- */
+function renderChips(){
+  chipsEl.innerHTML = '';
+  const allChip = document.createElement('div');
+  allChip.className = 'chip' + (activeCategory==='all' ? ' active' : '');
+  allChip.textContent = 'Alle';
+  allChip.onclick = ()=>{ activeCategory='all'; renderChips(); renderGrid(); };
+  chipsEl.appendChild(allChip);
+
+  CATEGORIES.forEach(cat=>{
+    const chip = document.createElement('div');
+    chip.className = 'chip' + (activeCategory===cat.id ? ' active' : '');
+    chip.textContent = cat.emoji + ' ' + cat.label;
+    chip.onclick = ()=>{ activeCategory=cat.id; renderChips(); renderGrid(); };
+    chipsEl.appendChild(chip);
+  });
+}
+
+function renderGrid(){
+  const query = document.getElementById('searchInput').value.trim().toLowerCase();
+  let filtered = listings.filter(l=>{
+    const matchesCat = activeCategory==='all' || l.category===activeCategory;
+    const matchesQuery = !query || l.title.toLowerCase().includes(query) || l.desc.toLowerCase().includes(query);
+    return matchesCat && matchesQuery;
+  });
+  filtered.sort((a,b)=> b.createdAt - a.createdAt);
+
+  grid.innerHTML = '';
+  if(filtered.length === 0){ emptyState.style.display = 'block'; return; }
+  emptyState.style.display = 'none';
+
+  filtered.forEach(l=>{
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="pin"></div>
+      <div class="thumb">${escapeHtml(l.emoji)}</div>
+      <div class="title">${escapeHtml(l.title)}</div>
+      <div class="meta">${escapeHtml(categoryLabel(l.category))} · ${escapeHtml(l.grade || '')}</div>
+      <div class="price">${l.price > 0 ? l.price.toFixed(2).replace('.',',') + ' €' : 'Zu verschenken'}</div>
+    `;
+    card.onclick = ()=> openDetail(l);
+    grid.appendChild(card);
+  });
+}
+
+function openDetail(l){
+  const modal = document.getElementById('detailModal');
+  const isOwnListing = l.ownerUsername && l.ownerUsername === currentUser.username;
+  const canMessage = l.ownerUsername && !isOwnListing;
+  modal.innerHTML = `
+    <button class="close" onclick="document.getElementById('detailOverlay').classList.remove('show')">✕</button>
+    <div class="detail-thumb">${escapeHtml(l.emoji)}</div>
+    <h2>${escapeHtml(l.title)}</h2>
+    <div class="detail-price">${l.price > 0 ? l.price.toFixed(2).replace('.',',') + ' €' : 'Zu verschenken'}</div>
+    <div class="detail-meta">${escapeHtml(categoryLabel(l.category))} · ${escapeHtml(l.condition)} · ${escapeHtml(l.grade || '')}</div>
+    <div class="detail-desc">${escapeHtml(l.desc)}</div>
+    <label>Kontakt</label>
+    <div style="font-weight:700;">${escapeHtml(l.contact)}</div>
+    ${isOwnListing ? '<div class="tagline" style="margin-top:14px;">Das ist dein eigenes Inserat.</div>' : ''}
+    ${canMessage ? `
+      <label for="msgText" style="margin-top:14px;">Nachricht an ${escapeHtml(l.contact)}</label>
+      <textarea id="msgText" placeholder="Hallo, ist das noch verfügbar?"></textarea>
+      <div class="actions">
+        <button class="btn small" id="sendMsgBtn">Nachricht senden</button>
+      </div>
+    ` : ''}
+  `;
+  if(canMessage){
+    document.getElementById('sendMsgBtn').onclick = async ()=>{
+      const text = document.getElementById('msgText').value.trim();
+      if(!text){ showToast('Bitte eine Nachricht schreiben.'); return; }
+      try{
+        await sendMessage(l.id, l.ownerUsername, text);
+        document.getElementById('detailOverlay').classList.remove('show');
+        showToast('Nachricht gesendet 📨');
+      }catch(e){
+        showToast(e.message || 'Senden hat nicht geklappt.');
+      }
+    };
+  }
+  document.getElementById('detailOverlay').classList.add('show');
+}
+
+/* ---------- PROFIL ---------- */
+function renderProfile(){
+  document.getElementById('profileWho').textContent = `${currentUser.name}, ${currentUser.klasse} (${currentUser.username})`;
+  const mine = listings.filter(l=> l.ownerUsername === currentUser.username);
+  const listEl = document.getElementById('myListingsList');
+  listEl.innerHTML = '';
+  if(mine.length === 0){
+    listEl.innerHTML = '<div class="tagline">Du hast noch keine Inserate veröffentlicht.</div>';
+    return;
+  }
+  mine.sort((a,b)=> b.createdAt - a.createdAt).forEach(l=>{
+    const row = document.createElement('div');
+    row.className = 'profile-btn';
+    row.innerHTML = `
+      <div>
+        <div class="name">${escapeHtml(l.emoji)} ${escapeHtml(l.title)}</div>
+        <div class="klasse">${escapeHtml(categoryLabel(l.category))} · ${l.price > 0 ? l.price.toFixed(2).replace('.',',') + ' €' : 'Zu verschenken'}</div>
+      </div>
+      <button class="btn small secondary">Entfernen</button>
+    `;
+    row.querySelector('button').onclick = (e)=>{ e.stopPropagation(); deleteListing(l.id); };
+    listEl.appendChild(row);
+  });
+}
+
+document.getElementById('openProfile').onclick = ()=>{
+  renderProfile();
+  document.getElementById('profileOverlay').classList.add('show');
+};
+document.getElementById('closeProfile').onclick = ()=> document.getElementById('profileOverlay').classList.remove('show');
+document.getElementById('profileOverlay').addEventListener('click', (e)=>{ if(e.target.id === 'profileOverlay') e.target.classList.remove('show'); });
+
+function setupAdminForm(formId, path, payload, successMessage){
+  const form = document.getElementById(formId);
+  const status = form.querySelector('[role="status"]');
+  form.onsubmit = async event =>{
+    event.preventDefault();
+    const token = authToken;
+    event.submitter.disabled = true;
+    status.textContent = '';
+    try{
+      const response = await fetch('/api/admin/' + path, {
+        method:'PUT',
+        headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer ' + token },
+        body: JSON.stringify(payload())
+      });
+      const data = await response.json();
+      if(authToken !== token) return;
+      if(!response.ok) throw new Error(data.error);
+      form.reset();
+      status.textContent = successMessage;
+    }catch(error){
+      if(authToken === token) status.textContent = error.message;
+    }finally{
+      event.submitter.disabled = false;
+    }
+  };
+}
+
+setupAdminForm('changeSchoolPassword', 'school-password', ()=> ({
+  password: document.getElementById('newSchoolPassword').value
+}), 'Schulpasswort gespeichert.');
+
+setupAdminForm('resetUserPassword', 'user-password', ()=> ({
+  username: document.getElementById('resetUsername').value.trim(),
+  password: document.getElementById('newUserPassword').value
+}), 'Nutzerpasswort wurde zurückgesetzt.');
+
+/* ---------- NACHRICHTEN ---------- */
+const allMessages = new Map();
+const messagesOverlay = document.getElementById('messagesOverlay');
+const messagesBody = document.getElementById('messagesBody');
+let activeThread = null;
+let messagePoll;
+let pendingMessageFetch;
+
+async function fetchMessages(){
+  const token = authToken;
+  if(!token || pendingMessageFetch === token) return;
+  pendingMessageFetch = token;
+  try{
+    const r = await fetch('/api/messages', {
+      headers:{ 'Authorization': 'Bearer ' + token },
+      signal: AbortSignal.timeout(10000)
+    });
+    if(r.status === 401 && authToken === token){
+      leaveApp('Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.');
+      return;
+    }
+    if(!r.ok) return;
+    const data = await r.json();
+    if(authToken === token) mergeMessages(data.messages);
+  }catch(e){
+    // Keep the current chat visible. The next poll retries automatically.
+  }finally{
+    if(pendingMessageFetch === token) pendingMessageFetch = null;
+  }
+}
+
+function mergeMessages(messages){
+  const added = messages.filter(m => !allMessages.has(m.id));
+  if(!added.length) return;
+  added.forEach(m => allMessages.set(m.id, m));
+  updateUnreadBadge();
+  if(!messagesOverlay.classList.contains('show')) return;
+  if(!activeThread) renderInbox();
+  else if(added.some(m => conversationKey(m) === activeThread)) renderThreadMessages();
+}
+
+function updateUnreadBadge(){
+  const badge = document.getElementById('unreadBadge');
+  badge.style.display = allMessages.size ? 'inline' : 'none';
+  badge.textContent = '(' + allMessages.size + ')';
+}
+
+async function sendMessage(listingId, to, text){
+  const token = authToken;
+  const r = await fetch('/api/messages', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization': 'Bearer ' + token
+    },
+    body: JSON.stringify({ listingId, to, text })
+  });
+  const data = await r.json();
+  if(!r.ok) throw new Error(data.error || 'Senden hat nicht geklappt.');
+  if(authToken === token) mergeMessages([data.message]);
+}
+
+function conversationKey(m){
+  const other = m.from === currentUser.username ? m.to : m.from;
+  return JSON.stringify([m.listingId, other]);
+}
+
+function threadMessages(key){
+  return [...allMessages.values()].filter(m => conversationKey(m) === key)
+    .sort((a,b) => a.createdAt - b.createdAt);
+}
+
+function renderInbox(){
+  activeThread = null;
+  const body = messagesBody;
+  document.getElementById('messagesTitle').textContent = 'Nachrichten';
+  if(allMessages.size === 0){
+    body.innerHTML = '<div class="tagline">Noch keine Nachrichten.</div>';
+    return;
+  }
+  const byConvo = new Map();
+  allMessages.forEach(m=>{
+    const key = conversationKey(m);
+    const list = byConvo.get(key) || [];
+    list.push(m);
+    byConvo.set(key, list);
+  });
+  const convos = [...byConvo.values()].map(list=>{
+    list.sort((a,b)=> a.createdAt - b.createdAt);
+    return list[list.length - 1];
+  }).sort((a,b)=> b.createdAt - a.createdAt);
+
+  body.innerHTML = '';
+  convos.forEach(m=>{
+    const otherName = m.from === currentUser.username ? m.toName : m.fromName;
+    const row = document.createElement('div');
+    row.className = 'profile-btn';
+    row.innerHTML = `
+      <div>
+        <div class="name">${escapeHtml(otherName)}</div>
+        <div class="klasse">zu „${escapeHtml(m.listingTitle)}“ · ${escapeHtml(m.text.slice(0,60))}</div>
+      </div>
+    `;
+    row.onclick = ()=> openThread(conversationKey(m));
+    body.appendChild(row);
+  });
+}
+
+function renderThreadMessages(scrollToEnd = false){
+  const history = document.getElementById('chatHistory');
+  const nearEnd = history.scrollHeight - history.scrollTop - history.clientHeight < 40;
+  const previousTop = history.scrollTop;
+  history.innerHTML = threadMessages(activeThread).map(m => {
+    const mine = m.from === currentUser.username;
+    return `<div class="chat-message${mine ? ' mine' : ''}"><div class="chat-bubble">${escapeHtml(m.text)}</div></div>`;
+  }).join('');
+  history.scrollTop = scrollToEnd || nearEnd ? history.scrollHeight : previousTop;
+}
+
+function openThread(key){
+  const [listingId, otherUsername] = JSON.parse(key);
+  const [first] = threadMessages(key);
+  if(!first) return;
+  activeThread = key;
+  const otherName = first.from === currentUser.username ? first.toName : first.fromName;
+  document.getElementById('messagesTitle').innerHTML = `<button class="btn link" id="backToInbox">← Zurück</button> ${escapeHtml(otherName)}`;
+
+  messagesBody.innerHTML = `
+    <div class="chat-history" id="chatHistory"></div>
+    <textarea id="replyText" placeholder="Antwort schreiben…" aria-label="Antwort schreiben"></textarea>
+    <div class="actions">
+      <button class="btn small" id="sendReplyBtn">Senden</button>
+    </div>
+  `;
+  renderThreadMessages(true);
+  document.getElementById('backToInbox').onclick = renderInbox;
+  const reply = document.getElementById('replyText');
+  const send = document.getElementById('sendReplyBtn');
+  send.onclick = async ()=>{
+    const draft = reply.value;
+    if(!draft.trim()) return;
+    send.disabled = true;
+    try{
+      await sendMessage(listingId, otherUsername, draft);
+      if(reply.value === draft) reply.value = '';
+      if(reply.isConnected && messagesOverlay.classList.contains('show')) {
+        const history = document.getElementById('chatHistory');
+        history.scrollTop = history.scrollHeight;
+      }
+    }catch(e){
+      showToast(e.message || 'Senden hat nicht geklappt.');
+    }finally{
+      send.disabled = false;
+    }
+  };
+}
+
+document.getElementById('openMessages').onclick = ()=>{
+  renderInbox();
+  messagesOverlay.classList.add('show');
+  fetchMessages();
+};
+document.getElementById('closeMessages').onclick = ()=> messagesOverlay.classList.remove('show');
+messagesOverlay.addEventListener('click', (e)=>{ if(e.target === messagesOverlay) messagesOverlay.classList.remove('show'); });
+
+function setupForm(){
+  const catSelect = document.getElementById('fCategory');
+  CATEGORIES.forEach(cat=>{
+    const opt = document.createElement('option');
+    opt.value = cat.id;
+    opt.textContent = cat.emoji + ' ' + cat.label;
+    catSelect.appendChild(opt);
+  });
+
+  const emojiRow = document.getElementById('emojiRow');
+  EMOJI_CHOICES.forEach((em,i)=>{
+    const btn = document.createElement('div');
+    btn.className = 'emoji-choice' + (i===0 ? ' selected' : '');
+    btn.textContent = em;
+    btn.onclick = ()=>{
+      selectedEmoji = em;
+      document.querySelectorAll('.emoji-choice').forEach(e=>e.classList.remove('selected'));
+      btn.classList.add('selected');
+    };
+    emojiRow.appendChild(btn);
+  });
+}
+
+function resetForm(){
+  document.getElementById('fTitle').value='';
+  document.getElementById('fPrice').value='';
+  document.getElementById('fGrade').value='';
+  document.getElementById('fDesc').value='';
+  document.getElementById('fCategory').selectedIndex=0;
+  document.getElementById('fCondition').selectedIndex=0;
+  selectedEmoji = EMOJI_CHOICES[0];
+  document.querySelectorAll('.emoji-choice').forEach((e,i)=>e.classList.toggle('selected', i===0));
+}
+
+document.getElementById('openNewListing').onclick = ()=>{
+  resetForm();
+  document.getElementById('formOverlay').classList.add('show');
+};
+document.getElementById('closeForm').onclick = ()=> document.getElementById('formOverlay').classList.remove('show');
+document.getElementById('cancelForm').onclick = ()=> document.getElementById('formOverlay').classList.remove('show');
+
+document.getElementById('submitListing').onclick = async ()=>{
+  const title = document.getElementById('fTitle').value.trim();
+  if(!title){ showToast('Bitte einen Titel angeben'); return; }
+  const payload = {
+    title,
+    category: document.getElementById('fCategory').value,
+    price: parseFloat(document.getElementById('fPrice').value) || 0,
+    condition: document.getElementById('fCondition').value,
+    grade: document.getElementById('fGrade').value.trim(),
+    emoji: selectedEmoji,
+    desc: document.getElementById('fDesc').value.trim(),
+  };
+  try{
+    const listing = await createListing(payload);
+    listings.push(listing);
+    document.getElementById('formOverlay').classList.remove('show');
+    renderChips();
+    renderGrid();
+    showToast('Inserat veröffentlicht 🎉');
+  }catch(e){
+    showToast(e.message || 'Veröffentlichen hat nicht geklappt.');
+  }
+};
+
+document.getElementById('searchInput').addEventListener('input', renderGrid);
+document.getElementById('detailOverlay').addEventListener('click', (e)=>{ if(e.target.id === 'detailOverlay') e.target.classList.remove('show'); });
+document.getElementById('formOverlay').addEventListener('click', (e)=>{ if(e.target.id === 'formOverlay') e.target.classList.remove('show'); });
+
+/* ---------- INIT ---------- */
+function init(){
+  setupForm();
+  document.getElementById('authScreen').style.display = 'flex';
+  prefillLastUsername();
+}
+init();
+</script>
+</body>
+</html>
