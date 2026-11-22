@@ -1,7 +1,7 @@
 {
-  "name": "heftweise-server",
+  "name": "SchoolSupply-server",
   "version": "1.0.0",
-  "description": "Selbst gehosteter Server fuer die Heftweise Schulsachen-Boerse (Sportschule Halle)",
+  "description": "Selbst gehosteter Server fuer die SchoolSupply Schulsachen-Boerse (Sportschule Halle)",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
